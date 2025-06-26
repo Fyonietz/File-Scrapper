@@ -1,0 +1,3 @@
+/d/Repo/File-Scrapper/build/CMakeFiles/Sea.dir
+/d/Repo/File-Scrapper/build/CMakeFiles/edit_cache.dir
+/d/Repo/File-Scrapper/build/CMakeFiles/rebuild_cache.dir
