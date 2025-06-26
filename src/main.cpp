@@ -16,16 +16,22 @@ int main(int argc,char *argv[]){
     std::string extension = argv[2];
     std::string path_output = argv[3];
     std::string file;
+    int found = 0;
     fs::path path_as_file_system(path_input);
     
-    for(const auto &entry : fs::recursive_directory_iterator(path_as_file_system)){
-        if(entry.is_regular_file() && entry.path().extension() == extension){
-            // std::cout << entry.path().filename() << "\n";
-            std::string file ="\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
-            std::ofstream file_output(path_output,std::ios::app);
-            file_output << file;
+    try {
+        for(const auto &entry : fs::recursive_directory_iterator(path_as_file_system)){
+            if(entry.is_regular_file() && entry.path().extension() == extension){
+                std::string file = "\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
+                std::ofstream file_output(path_output,std::ios::app);
+                file_output << file;
+                found++;
+                std::cout << "File Found(s): " << found << std::endl;
+            }
         }
+    } catch(const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
-
+    std::cout << "Total File Found(s): " << found << std::endl;
     return 0;
 }
