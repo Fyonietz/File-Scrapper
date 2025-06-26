@@ -167,4 +167,8 @@ CMakeFiles/Sea.dir/src/main.cpp.o: D:/Repo/File-Scrapper/src/main.cpp \
  C:/msys64/mingw64/include/c++/14.2.0/bits/unique_ptr.h \
  C:/msys64/mingw64/include/c++/14.2.0/ext/aligned_buffer.h \
  C:/msys64/mingw64/include/c++/14.2.0/bits/fs_dir.h \
- C:/msys64/mingw64/include/c++/14.2.0/bits/fs_ops.h
+ C:/msys64/mingw64/include/c++/14.2.0/bits/fs_ops.h \
+ C:/msys64/mingw64/include/c++/14.2.0/fstream \
+ C:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
+ C:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
+ C:/msys64/mingw64/include/c++/14.2.0/bits/fstream.tcc
