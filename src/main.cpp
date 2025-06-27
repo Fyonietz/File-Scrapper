@@ -4,34 +4,42 @@
 #include <filesystem>
 #include <fstream>
 #include "json.hpp"
+#include <chrono>
 
 namespace fs=std::filesystem;
 
-std::pair<int,std::vector<std::string>> search(fs::path path,std::string ext,std::string out){
-    std::string app_path;
-    std::vector<std::string> app_name;
+int search(fs::path path,std::string ext,std::string out){
+    nlohmann::json result;
+    result["app_lists"] = nlohmann::json::array();
+
     int found = 0;
     try{
         for(const auto &entry : fs::recursive_directory_iterator(path)){
             if(entry.is_regular_file() && entry.path().extension() == ext){
-                app_path = "\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
-                app_name.push_back(entry.path().filename().string());
-                std::ofstream file(out,std::ios::app);
-                file << app_path;
-                found++;
-                // std::cout << "Total File Found(s): " << found++ << std::endl;
+                std::string app_path = "\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
+                std::string app_name = entry.path().filename().string();
+                
+                nlohmann::json app;
+                app[app_name.substr(0,app_name.find_last_of('.'))]={
+                    {"app_location",app_path}
+                };
+                result["app_lists"].push_back(app);
+                std::ofstream file(out);
+                file << result.dump(4);
+                file.close();
+                std::cout << "App Found(s): "<<found++ << std::endl;
             }
         }
     }catch(const fs::filesystem_error e){
         std::cerr << "Filesystem Error: " << e.what() << std::endl;
     }
-    return{found,app_name};
+    return found;
 }
 
 
 int main(int argc,char *argv[]){
 
-    if(argc < 1 || argc == 1){
+    if(argc < 2){
         std::cout << "Type -help for more information " << std::endl;
         return 0;
     }
@@ -40,11 +48,12 @@ int main(int argc,char *argv[]){
     std::string extension = argv[2];
     std::string path_output = argv[3];
     fs::path path_as_file_system(path_input);
-    auto [total_founds,names] = search(path_as_file_system,extension,path_output);
-    for(const auto name : names){
-        std::cout << "Found: " << name << std::endl;
-    }
-    std::cout << "File Found(s): " << total_founds << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
+    int output = search(path_as_file_system,extension,path_output);
+    auto end = std::chrono::high_resolution_clock::now();
 
+    std::chrono::duration<double> duration = end-start;
+    std::cout <<"Total App Found(s): "<< output << std::endl;
+    std::cout <<"Time Taken: " << duration.count() << " Seconds" << std::endl;
     return 0;
 }
