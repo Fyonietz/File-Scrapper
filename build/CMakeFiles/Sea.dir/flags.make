@@ -4,7 +4,7 @@
 # compile CXX with /mingw64/bin/c++.exe
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/d/Repo/File-Scrapper/src
 
 CXX_FLAGS = 
 
