@@ -18,10 +18,11 @@ int search(fs::path path,std::string ext,std::string out){
             if(entry.is_regular_file() && entry.path().extension() == ext){
                 std::string app_path = "\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
                 std::string app_name = entry.path().filename().string();
-                
+                std::string app_image = "/Assets/icon/" +  app_name; 
                 nlohmann::json app;
                 app[app_name.substr(0,app_name.find_last_of('.'))]={
-                    {"app_location",app_path}
+                    {"app_location",app_path},
+                    {"app_image",app_image}
                 };
                 result["app_lists"].push_back(app);
                 std::ofstream file(out);
