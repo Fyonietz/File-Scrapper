@@ -16,9 +16,9 @@ int search(fs::path path,std::string ext,std::string out){
     try{
         for(const auto &entry : fs::recursive_directory_iterator(path)){
             if(entry.is_regular_file() && entry.path().extension() == ext){
-                std::string app_path = "\"" + fs::absolute(entry.path()).string() +  "\"" + "\n" ;
+                std::string app_path = fs::absolute(entry.path()).string();
                 std::string app_name = entry.path().filename().string();
-                std::string app_image = "/Assets/icon/" +  app_name; 
+                std::string app_image = "/Assets/icon/" +  entry.path().filename().stem().string() + ".png"; 
                 nlohmann::json app;
                 app[app_name.substr(0,app_name.find_last_of('.'))]={
                     {"app_location",app_path},
