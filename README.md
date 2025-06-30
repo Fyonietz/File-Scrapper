@@ -44,7 +44,7 @@
 3. Run the executable with the required arguments:
 
    ```bash
-   .\Sea <input_directory> <extension> <output_file.json>
+   .\Sea 
    ```
 
 ---
