@@ -27,12 +27,13 @@ int search(fs::path path,std::string ext,std::string out){
                     {"app_image",app_image}
                 };
                 result["app_lists"].push_back(app);
+                std::cout << "App Found(s): "<<++found << std::endl;
+            }
+        }
                 std::ofstream file(out);
                 file << result.dump(4);
                 file.close();
-                std::cout << "App Found(s): "<<found++ << std::endl;
-            }
-        }
+
     }catch(const fs::filesystem_error e){
         std::cerr << "Filesystem Error: " << e.what() << std::endl;
     }
