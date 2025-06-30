@@ -5,12 +5,19 @@ project(Sea)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-
+file(GLOB_RECURSE C_FILE "src/*.c")
 
 add_executable(${CMAKE_PROJECT_NAME}
     ${SOURCES}
+    ${C_FILE}
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME}
     PUBLIC src
+    PUBLIC header
+)
+
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    Comdlg32
+    Ole32
 )

@@ -5,6 +5,8 @@
 #include <fstream>
 #include "json.hpp"
 #include <chrono>
+#include "tinyfiledialogs.h"
+
 
 namespace fs=std::filesystem;
 
@@ -39,22 +41,32 @@ int search(fs::path path,std::string ext,std::string out){
 
 
 int main(int argc,char *argv[]){
+    char const *Input_folder;
+    char const *output_json;
 
-    if(argc < 2){
-        std::cout << "Type -help for more information " << std::endl;
-        return 0;
-    }
-
-    std::string path_input = argv[1];
-    std::string extension = argv[2];
-    std::string path_output = argv[3];
-    fs::path path_as_file_system(path_input);
+    Input_folder = tinyfd_selectFolderDialog(
+        "Select Input Folder",nullptr
+    );
+    if(!Input_folder){
+        tinyfd_messageBox("error","Select Folder Name Is NULL","ok","error",1);
+    };
+    const char *filter[1]={"*.json"};
+    output_json = tinyfd_saveFileDialog(
+        "Save File To",
+        NULL,
+        1,
+        filter,
+        NULL
+    );    
+    std::cout << Input_folder <<std::endl;
+    fs::path path_as_file_system(Input_folder);
     auto start = std::chrono::high_resolution_clock::now();
-    int output = search(path_as_file_system,extension,path_output);
+    int output = search(path_as_file_system,".exe",output_json);
     auto end = std::chrono::high_resolution_clock::now();
 
     std::chrono::duration<double> duration = end-start;
     std::cout <<"Total App Found(s): "<< output << std::endl;
     std::cout <<"Time Taken: " << duration.count() << " Seconds" << std::endl;
+
     return 0;
 }
