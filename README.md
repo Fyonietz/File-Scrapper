@@ -19,6 +19,7 @@
 ## 🛠️ Technology Stack
 
 * **C++** – Core language for high-performance file operations
+* **Zenety** - For POSIX/LINUX Compability
 * **Makefile** – For simple and fast builds
 * **CMake** – Cross-platform build automation support
 
