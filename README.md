@@ -62,6 +62,6 @@ Pull requests and issues are welcome! Feel free to open discussions for new feat
 ---
 ### 👥 Contributors
 
-[@DityaPerdana/File-Scrapper](https://github.com/DityaPerdana/File-Scrapper).
+[@DityaPerdana/File-Scrapper](https://github.com/DityaPerdana/File-Scrapper). << **Linux Version**
 
 ---
