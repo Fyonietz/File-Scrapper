@@ -1,3 +1,39 @@
+# Build directories
 build/
+cmake-build-*/
+
+# Executables
+Sea
+Sea.exe
+*.exe
+
+# Output files
 *.json
+
+# IDE/Editor files
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# CMake files (only in root, keep those in build/)
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Backup files
+*.bak
+*.backup
