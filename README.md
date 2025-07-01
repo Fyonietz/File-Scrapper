@@ -60,5 +60,6 @@ This project is licensed under the [MIT License](LICENSE).
 Pull requests and issues are welcome! Feel free to open discussions for new features or improvements.
 
 ---
-
-Let me know if you'd like a README version or want to include example code snippets directly in the documentation.
+## Contributor List
+https://github.com/DityaPerdana/File-Scrapper
+---
