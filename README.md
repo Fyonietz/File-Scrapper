@@ -60,7 +60,8 @@ This project is licensed under the [MIT License](LICENSE).
 Pull requests and issues are welcome! Feel free to open discussions for new features or improvements.
 
 ---
-## Contributor List
+### 👥 Contributors
 
-[@DityaPerdana/File-Scrapper](https://github.com/DityaPerdana/File-Scrapper)
+[@DityaPerdana/File-Scrapper](https://github.com/DityaPerdana/File-Scrapper).
+
 ---
