@@ -17,28 +17,37 @@ int search_windows(fs::path path,std::string ext,std::string out){
     result["app_lists"] = nlohmann::json::array();
 
     int found = 0;
-    try{
-        for(const auto &entry : fs::recursive_directory_iterator(path)){
-            if(entry.is_regular_file() && entry.path().extension() == ext){
-                std::string app_path = fs::absolute(entry.path()).string();
-                std::string app_name = entry.path().filename().string();
-                std::string app_image = "/Assets/icon/" +  entry.path().filename().stem().string() + ".png"; 
-                nlohmann::json app;
-                app[app_name.substr(0,app_name.find_last_of('.'))]={
-                    {"app_location",app_path},
-                    {"app_image",app_image}
-                };
-                result["app_lists"].push_back(app);
-                std::cout << "App Found(s): "<<++found << std::endl;
+    try {
+        for(const auto &entry : fs::recursive_directory_iterator(path, fs::directory_options::skip_permission_denied)){
+            try{
+                if(entry.is_regular_file() && entry.path().extension() == ext){
+                    std::string app_path = fs::absolute(entry.path()).string();
+                    std::string app_name = entry.path().filename().string();
+                    std::string app_image = "/Assets/icon/" +  entry.path().filename().stem().string() + ".png"; 
+                    nlohmann::json app;
+                    app[app_name.substr(0,app_name.find_last_of('.'))]={
+                        {"app_location",app_path},
+                        {"app_image",app_image}
+                    };
+                    result["app_lists"].push_back(app);
+                    std::cout << "App Found(s): "<<++found << std::endl;
+                }
+            }catch(const fs::filesystem_error& e){
+                std::cerr << "Filesystem Error: " << e.what() << std::endl;
+                continue;
             }
         }
-                std::ofstream file(out);
-                file << result.dump(4);
-                file.close();
-
-    }catch(const fs::filesystem_error e){
-        std::cerr << "Filesystem Error: " << e.what() << std::endl;
+    } catch(const fs::filesystem_error& e) {
+        std::cerr << "Fatal Filesystem Error: " << e.what() << std::endl;
     }
+    std::ofstream file(out);
+    if (!file.is_open()) {
+        std::cerr << "Error: Failed to open " << out << " for writing." << std::endl;
+    } else {
+        file << result.dump(4);
+        file.close();
+    }
+
     return found;
 }
 #else
@@ -48,32 +57,40 @@ int search_linux(fs::path path, std::string out) {
 
     int found = 0;
     try {
-        for (const auto &entry : fs::recursive_directory_iterator(path)) {
-            if (entry.is_regular_file() && access(entry.path().c_str(), X_OK) == 0) {
-                std::string app_path = fs::absolute(entry.path()).string();
-                std::string app_name = entry.path().filename().string();
-                std::string app_image = "/Assets/icon/" +  entry.path().filename().stem().string() + ".png"; 
+        for (const auto &entry : fs::recursive_directory_iterator(path, fs::directory_options::skip_permission_denied)) {
+            try {
+                if (entry.is_regular_file() && access(entry.path().c_str(), X_OK) == 0) {
+                    std::string app_path = fs::absolute(entry.path()).string();
+                    std::string app_name = entry.path().filename().string();
+                    std::string app_image = "/Assets/icon/" +  entry.path().filename().stem().string() + ".png"; 
 
-                nlohmann::json app;
-                app[app_name] = {
-                    {"app_location", app_path},
-                    {"app_image", app_image}
-                };
-                result["app_lists"].push_back(app);
-                std::cout << "App Found(s): " << ++found << std::endl;
+                    nlohmann::json app;
+                    app[app_name] = {
+                        {"app_location", app_path},
+                        {"app_image", app_image}
+                    };
+                    result["app_lists"].push_back(app);
+                    std::cout << "App Found(s): " << ++found << std::endl;
+                }
+            } catch (const fs::filesystem_error &e) {
+                std::cerr << "Filesystem Error: " << e.what() << std::endl;
+                continue;
             }
         }
+    } catch(const fs::filesystem_error& e) {
+        std::cerr << "Fatal Filesystem Error: " << e.what() << std::endl;
+    }
 
-        std::ofstream file(out);
+    std::ofstream file(out);
+    if (!file.is_open()) {
+        std::cerr << "Error: Failed to open " << out << " for writing." << std::endl;
+    } else {
         file << result.dump(4);
         file.close();
-
-    } catch (const fs::filesystem_error &e) {
-        std::cerr << "Filesystem Error: " << e.what() << std::endl;
     }
+
     return found;
 }
-
 #endif
 
 int main(int argc,char *argv[]){
